@@ -9,7 +9,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/recommend',
     name: 'recommend',
-    component: recommend
+    component: recommend,
+    children: [
+      {
+        path: ':id',
+        component: () => import('../views/disc/Disc.vue')
+      }
+    ]
   }
 ]
 

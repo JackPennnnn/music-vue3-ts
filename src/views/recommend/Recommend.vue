@@ -24,6 +24,7 @@
               v-for="item in recommendArr.goodPlayList"
               class="item"
               :key="item.id"
+              @click="selectItem(item)"
             >
               <div class="icon">
                 <img
@@ -42,11 +43,15 @@
         </div>
       </div>
     </scroll>
+
+    <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { getBanner, getPlayList } from '@/views/recommend/api/request'
 import Scroll from '@/components/common/scroll/Scroll.vue'
 import { Swipe, SwipeItem } from 'vant'
@@ -60,6 +65,8 @@ export default defineComponent({
   },
   setup() {
     const scroll = ref()
+    const $router = useRouter()
+    const store = useStore()
 
     let recommendArr = reactive({
       banners: [] as Array<Record<string, any>>,
@@ -86,9 +93,16 @@ export default defineComponent({
       }, 200)
     }
 
+    // 选中某一个歌单
+    const selectItem = function (item: Record<string, any>) {
+      $router.push(`/recommend/${item.id}`)
+      store.commit('music/SET_DISC', item)
+    }
+
     return {
       recommendArr,
-      loadImage
+      loadImage,
+      selectItem
     }
   }
 })
@@ -96,7 +110,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 @import '~@/common/style/variable.less';
-
+@import '~@/common/style/mixins.less';
 .recommend {
   position: fixed;
   width: 100%;
