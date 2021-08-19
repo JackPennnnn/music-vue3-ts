@@ -6,7 +6,12 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImg">
       <div class="play-wrapper">
-        <div ref="playBtn" v-show="songs.length > 0" class="play">
+        <div
+          ref="playBtn"
+          v-show="songs.length > 0"
+          class="play"
+          @click="random"
+        >
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -25,16 +30,18 @@
       <div class="song-list-wrapper">
         <song-list :songs="songs" @select="selectItem"></song-list>
       </div>
-      <loading color="#1989fa" v-show="!songs.length" :size="50" />
+      <loading color="#1989fa" :size="50" v-show="!songs.length" />
     </scroll>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch, isRef } from 'vue'
+import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import Scroll from '@/components/common/scroll/Scroll.vue'
 import { Loading } from 'vant'
+import 'vant/es/loading/style'
 import SongList from '@/components/songList/SongList.vue'
 
 export default defineComponent({
@@ -59,6 +66,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const $router = useRouter()
+    const store = useStore()
     const scrollY = ref<number>(0)
     const imageHeight = ref<number>(0)
     const maxTransLateY = ref<number>(0)
@@ -82,16 +90,21 @@ export default defineComponent({
       scrollY.value = position.y
     }
 
-    //点击返回键
+    // 点击返回键
     const back = function () {
       $router.back()
     }
 
+    // 随机播放
+    const random = function () {
+      store.dispatch('music/randomPlay', { list: props.songs })
+    }
+
     const selectItem = function (item: any, index: number) {
-      // this.selectPlay({
-      //   list: props.songs,
-      //   index: index
-      // })
+      store.dispatch('music/selectPlay', {
+        list: props.songs,
+        index: index
+      })
     }
 
     watch(
@@ -128,6 +141,7 @@ export default defineComponent({
       scroll,
       back,
       selectItem,
+      random,
       bgImg,
       list,
       Layer,
