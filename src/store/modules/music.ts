@@ -32,6 +32,27 @@ const musicModule: Module<MusicType, any> = {
   getters: {
     disc(state) {
       return state.disc
+    },
+    mode(state) {
+      return state.mode
+    },
+    sequenceList(state) {
+      return state.sequenceList
+    },
+    playList(state) {
+      return state.playList
+    },
+    currentIndex(state) {
+      return state.currentIndex
+    },
+    fullScreen(state) {
+      return state.fullScreen
+    },
+    playing(state) {
+      return state.playing
+    },
+    currentSong(state) {
+      return state.playList[state.currentIndex] || {}
     }
   }
 }

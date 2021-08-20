@@ -9,9 +9,11 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
-    "axios": "^0.21.1",
     "@better-scroll/core": "^2.0.6",
+    "@types/lyric-parser": "^1.0.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "lyric-parser": "^1.0.1",
     "vant": "^3.2.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
