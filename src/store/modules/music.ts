@@ -3,6 +3,10 @@ import { MusicType } from '@/store/modules/types/musicType'
 import { playMode } from '@/common/js/config'
 import * as actions from './modules/actions'
 import mutations from '@/store/modules/modules/mutations'
+import { loadSearch } from '@/common/js/history'
+import { loadFavorite } from '@/common/js/history'
+import { loadPlay } from '@/common/js/history'
+
 const musicModule: Module<MusicType, any> = {
   namespaced: true,
   state() {
@@ -20,7 +24,15 @@ const musicModule: Module<MusicType, any> = {
       //是否全屏
       fullScreen: false,
       //是否播放
-      playing: false
+      playing: false,
+      //搜索历史
+      searchHistory: loadSearch(),
+      //收藏列表
+      favoriteList: loadFavorite(),
+      //播放历史
+      playHistory: loadPlay(),
+      //排行榜
+      topList: []
     }
   },
   mutations: {
@@ -53,6 +65,18 @@ const musicModule: Module<MusicType, any> = {
     },
     currentSong(state) {
       return state.playList[state.currentIndex] || {}
+    },
+    searchHistory(state) {
+      return state.searchHistory
+    },
+    favoriteList(state) {
+      return state.favoriteList
+    },
+    playHistory(state) {
+      return state.playHistory
+    },
+    topList(state) {
+      return state.topList
     }
   }
 }

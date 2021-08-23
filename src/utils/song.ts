@@ -4,7 +4,7 @@ export interface song {
   singer: string
   name: string
   album?: number
-  duration?: number
+  duration: number
   image?: string
   url?: string
 }
@@ -38,7 +38,7 @@ export function createDisc(musicData: Record<string, any>) {
     singer: filterSinger(musicData.ar),
     name: musicData.name,
     album: musicData.al.name,
-    duration: musicData.dt,
+    duration: musicData.dt / 1000,
     image: musicData.al.picUrl
   })
 }

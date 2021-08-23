@@ -21,6 +21,18 @@ const mutations = {
   },
   SET_PLAY_MODE(state: MusicType, mode: number) {
     state.mode = mode
+  },
+  SET_TOP_LIST(state: MusicType, topList: Array<any>) {
+    state.topList = topList
+  },
+  SET_SEARCH_HISTORY(state: MusicType, searchHistory: Array<any>) {
+    state.searchHistory = searchHistory
+  },
+  SET_PLAY_FAVORITELIST(state: MusicType, favoriteList: Array<any>) {
+    state.favoriteList = favoriteList
+  },
+  SET_PLAY_HISTORY(state: MusicType, playHistory: Array<any>) {
+    state.playHistory = playHistory
   }
 }
 

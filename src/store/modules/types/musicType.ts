@@ -7,4 +7,8 @@ export interface MusicType {
   currentIndex: number
   fullScreen: boolean
   playing: boolean
+  favoriteList: Array<any>
+  playHistory: Array<any>
+  searchHistory: Array<any>
+  topList: Array<any>
 }

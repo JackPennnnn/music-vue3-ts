@@ -64,10 +64,10 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{ format(currentTime) }}</span>
             <div class="progress-bar-wrapper">
-              <!--                      <progress-bar-->
-              <!--                        :percent="percent"-->
-              <!--                        @changeTime="changeTime"-->
-              <!--                      ></progress-bar>-->
+              <progress-bar
+                :percent="percent"
+                @changeTime="changeTime"
+              ></progress-bar>
             </div>
             <span class="time timer-r">{{ format(currentSong.duration) }}</span>
           </div>
@@ -85,54 +85,54 @@
             <div class="icon i-right" :class="iconDisable">
               <i class="icon-next" @click="next"></i>
             </div>
-            <!--            <div class="icon i-right">-->
-            <!--              <i-->
-            <!--                class="icon"-->
-            <!--                :class="getFavoriteIcon(currentSong)"-->
-            <!--                @click="toggleFavorite(currentSong)"-->
-            <!--              ></i>-->
-            <!--            </div>-->
+            <div class="icon i-right">
+              <i
+                class="icon"
+                :class="getFavoriteIcon(currentSong)"
+                @click="toggleFavorite(currentSong)"
+              ></i>
+            </div>
           </div>
         </div>
       </div>
     </transition>
 
     <!--        收起后的播放器-->
-    <!--    <transition name="mini" appear>-->
-    <!--      <div class="mini-player" v-show="!fullScreen" @click="open">-->
-    <!--        <div class="icon">-->
-    <!--          <div class="imgWrapper" ref="miniWrapper">-->
-    <!--            <img-->
-    <!--              ref="miniImage"-->
-    <!--              width="40"-->
-    <!--              height="40"-->
-    <!--              :src="currentSong.image"-->
-    <!--              :class="cdRotate"-->
-    <!--            />-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--        <div class="text">-->
-    <!--          <h2 class="name" v-html="currentSong.name"></h2>-->
-    <!--          <p class="desc" v-html="currentSong.singer"></p>-->
-    <!--        </div>-->
-    <!--        <div class="control">-->
-    <!--          &lt;!&ndash;                阻止冒泡  如果没则会打开大播放器 因为 父元素有个open方法&ndash;&gt;-->
+    <transition name="mini" appear>
+      <div class="mini-player" v-show="!fullScreen" @click="open">
+        <div class="icon">
+          <div class="imgWrapper" ref="miniWrapper">
+            <img
+              ref="miniImage"
+              width="40"
+              height="40"
+              :src="currentSong.image"
+              :class="cdRotate"
+            />
+          </div>
+        </div>
+        <div class="text">
+          <h2 class="name" v-html="currentSong.name"></h2>
+          <p class="desc" v-html="currentSong.singer"></p>
+        </div>
+        <div class="control">
+          <!--                阻止冒泡  如果没则会打开大播放器 因为 父元素有个open方法-->
 
-    <!--          <progress-circle :current-rate="percent">-->
-    <!--            <i-->
-    <!--              :class="miniPlayIcon"-->
-    <!--              @click.stop.prevent="togglePlaying"-->
-    <!--              class="icon-mini"-->
-    <!--            ></i>-->
-    <!--          </progress-circle>-->
-    <!--        </div>-->
-    <!--        <div class="control">-->
-    <!--          <i class="icon-playlist" @click.stop="showPlayList"></i>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </transition>-->
-    <!--        迷你播放器的播放列表-->
-    <!--    <play-list ref="playList"></play-list>-->
+          <progress-circle :current-rate="percent">
+            <i
+              :class="miniPlayIcon"
+              @click.stop.prevent="togglePlaying"
+              class="icon-mini"
+            ></i>
+          </progress-circle>
+        </div>
+        <div class="control">
+          <i class="icon-playlist" @click.stop="showPlayList"></i>
+        </div>
+      </div>
+    </transition>
+    <!--    迷你播放器的播放列表-->
+    <play-list ref="playListRef"></play-list>
     <!--audio自带canplay error timeupdate-->
     <audio
       ref="audio"
@@ -155,13 +155,22 @@ import { getSongLyric, getSongUrl } from '@/components/player/api/request'
 import { mapGetters } from '@/utils/store'
 import { xipai } from '@/utils/utils'
 import Scroll from '@/components/common/scroll/Scroll.vue'
+import ProgressBar from '@/components/progress-bar/ProgressBar.vue'
+import ProgressCircle from '@/components/progress-circle/ProgressCircle.vue'
+import { playerHook } from '@/hooks/playerHook'
+import PlayList from '@/components/play-list/PlayList.vue'
 
 export default defineComponent({
   components: {
-    Scroll
+    Scroll,
+    ProgressBar,
+    ProgressCircle,
+    PlayList
   },
   setup() {
     const store = useStore()
+    const { getFavoriteIcon, toggleFavorite } = playerHook()
+
     const songReady = ref<boolean>(false)
     // 当前时间
     const currentTime = ref<number>(0)
@@ -175,6 +184,7 @@ export default defineComponent({
     //当前歌词
     const playingLyric = ref<string>('')
     const toast = ref<string[]>(['列表播放', '单曲循环', '随机播放'])
+    const playListRef = ref<any>(null)
 
     const {
       fullScreen,
@@ -185,7 +195,6 @@ export default defineComponent({
       mode,
       sequenceList
     } = mapGetters('music')
-    console.log(playList)
     // computed
     const playIcon = computed(() =>
       store.getters['music/playing'] ? 'icon-pause' : 'icon-play'
@@ -423,13 +432,13 @@ export default defineComponent({
     //改变播放模式
     const changeMode = function () {
       const modeRef = (mode.value + 1) % 3
+      store.commit('music/SET_PLAY_MODE', modeRef)
       let list = null
       if (modeRef === playMode.random) {
         list = xipai(sequenceList.value)
       } else {
         list = sequenceList.value
       }
-
       //    希望切换切换播放模式时，currentSong并不会改变 所以要找到它的位置
       let index = list.findIndex((item: any) => {
         return item.id === currentSong.value.id
@@ -440,7 +449,7 @@ export default defineComponent({
 
     //显示播放列表
     const showPlayList = function () {
-      playList.value.show()
+      playListRef.value.show()
     }
     return {
       audio,
@@ -466,6 +475,8 @@ export default defineComponent({
       currentLyric,
       currentTime,
       currentLineNum,
+      percent,
+      playListRef,
       changShowLyric,
       back,
       open,
@@ -480,7 +491,9 @@ export default defineComponent({
       changeTime,
       changeMode,
       showPlayList,
-      error
+      error,
+      getFavoriteIcon,
+      toggleFavorite
     }
   }
 })
@@ -691,6 +704,10 @@ export default defineComponent({
           &.time-r {
             text-align: right;
           }
+        }
+
+        .progress-bar-wrapper {
+          flex: 1;
         }
       }
 
