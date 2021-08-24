@@ -389,7 +389,7 @@ export default defineComponent({
       songReady.value = true
       audio.value.play()
       //讲歌曲放到播放历史上
-      // this.savePlayHistory(this.currentSong)
+      store.dispatch('music/savePlayHistory', currentSong.value)
     }
     const error = function () {
       songReady.value = true

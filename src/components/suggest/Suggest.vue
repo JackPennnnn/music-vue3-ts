@@ -33,6 +33,7 @@ import { getSearchResult } from '@/components/suggest/api/request'
 import { createSearchSong } from '@/utils/song'
 import { Toast } from 'vant'
 import Scroll from '@/components/common/scroll/Scroll.vue'
+import 'vant/es/toast/style'
 export default defineComponent({
   components: {
     Scroll

@@ -30,6 +30,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/search',
     component: () => import('../views/search/Search.vue')
+  },
+  {
+    path: '/user',
+    component: () => import('../views/user/User.vue')
   }
 ]
 

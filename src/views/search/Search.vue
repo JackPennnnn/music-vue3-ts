@@ -28,11 +28,11 @@
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <!--            <history-list-->
-            <!--              :searches="searchHistory"-->
-            <!--              @select="addQuery"-->
-            <!--              @deleteOne="deleteOne"-->
-            <!--            ></history-list>-->
+            <history-list
+              :searches="searchHistory"
+              @select="addQuery"
+              @deleteOne="deleteOne"
+            ></history-list>
           </div>
         </div>
       </Scroll>
@@ -56,11 +56,14 @@ import { Dialog } from 'vant'
 import Scroll from '@/components/common/scroll/Scroll.vue'
 import SearchBox from '@/components/searchBox/SearchBox.vue'
 import Suggest from '@/components/suggest/Suggest.vue'
+import HistoryList from '@/components/historyList/HistoryList.vue'
+import 'vant/es/dialog/style'
 export default defineComponent({
   components: {
     Scroll,
     SearchBox,
-    Suggest
+    Suggest,
+    HistoryList
   },
   setup() {
     const store = useStore()
