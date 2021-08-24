@@ -32,7 +32,8 @@ const musicModule: Module<MusicType, any> = {
       //播放历史
       playHistory: loadPlay(),
       //排行榜
-      topList: []
+      topList: [],
+      singer: {}
     }
   },
   mutations: {
@@ -77,6 +78,9 @@ const musicModule: Module<MusicType, any> = {
     },
     topList(state) {
       return state.topList
+    },
+    singer(state) {
+      return state.singer
     }
   }
 }

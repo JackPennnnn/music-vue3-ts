@@ -16,6 +16,20 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/disc/Disc.vue')
       }
     ]
+  },
+  {
+    path: '/singer',
+    component: () => import('../views/singer/Singer.vue'),
+    children: [
+      {
+        path: ':id',
+        component: () => import('../views/singer/SingerDetail.vue')
+      }
+    ]
+  },
+  {
+    path: '/search',
+    component: () => import('../views/search/Search.vue')
   }
 ]
 

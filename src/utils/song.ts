@@ -43,6 +43,30 @@ export function createDisc(musicData: Record<string, any>) {
   })
 }
 
+export function createSong(musicData: Record<string, any>) {
+  return new Song({
+    id: musicData.id,
+    mid: musicData.al.id,
+    singer: filterSinger(musicData.ar),
+    name: musicData.name,
+    album: musicData.al.name,
+    duration: musicData.dt / 1000,
+    image: musicData.al.picUrl
+  })
+}
+
+export function createSearchSong(musicData: Record<string, any>) {
+  return new Song({
+    id: musicData.id,
+    mid: musicData.album.id,
+    singer: filterSinger(musicData.artists),
+    name: musicData.name,
+    album: musicData.album.name,
+    duration: musicData.duration / 1000,
+    image: musicData.album.artist.img1v1Url
+  })
+}
+
 //万一出现有两个歌手['a','b']
 /*
 *  {name: "薛之谦", mid: "002J4UUk29y8BY", id: 5062}

@@ -1,3 +1,5 @@
+import { singerType } from '@/utils/singer'
+
 export interface MusicType {
   //歌单
   disc: Record<string, any>
@@ -11,4 +13,5 @@ export interface MusicType {
   playHistory: Array<any>
   searchHistory: Array<any>
   topList: Array<any>
+  singer: singerType | Record<string, unknown>
 }

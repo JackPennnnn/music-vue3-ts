@@ -2,7 +2,7 @@
 import JasperRequest from './service'
 
 const jasperRequest = new JasperRequest({
-  baseURL: '',
+  baseURL: 'http://119.23.48.158:3000',
   timeout: 10000,
   interceptors: {
     requestInterceptor: (config) => {

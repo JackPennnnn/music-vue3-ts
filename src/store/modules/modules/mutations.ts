@@ -1,4 +1,5 @@
 import { MusicType } from '@/store/modules/types/musicType'
+import { singerType } from '@/utils/singer'
 
 const mutations = {
   SET_DISC(state: MusicType, disc: Record<string, any>) {
@@ -33,6 +34,9 @@ const mutations = {
   },
   SET_PLAY_HISTORY(state: MusicType, playHistory: Array<any>) {
     state.playHistory = playHistory
+  },
+  SET_SINGER(state: MusicType, singer: singerType) {
+    state.singer = singer
   }
 }
 
